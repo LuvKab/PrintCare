@@ -1,119 +1,121 @@
-# PrintCare
+# PrintCare — 打印养护
 
 <p align="center">
-  <strong>Keep your printhead healthy with scheduled maintenance printing.</strong>
+  <strong>定时打印，保持喷头畅通，防止堵塞。</strong>
 </p>
 
 <p align="center">
-  <a href="#features">Features</a> &bull;
-  <a href="#download">Download</a> &bull;
-  <a href="#screenshots">Screenshots</a> &bull;
-  <a href="#usage">Usage</a> &bull;
-  <a href="#build">Build</a> &bull;
-  <a href="#license">License</a>
+  <a href="#功能特性">功能特性</a> &bull;
+  <a href="#下载">下载</a> &bull;
+  <a href="#使用方法">使用方法</a> &bull;
+  <a href="#构建">构建</a> &bull;
+  <a href="#english">English</a>
 </p>
 
 ---
 
-Inkjet printers suffer from clogged nozzles when left idle for days. **PrintCare** solves this by automatically printing a maintenance image at configurable intervals — keeping your printhead clean and ready.
+喷墨打印机长时间不使用，喷头容易堵塞干涸。**PrintCare** 通过定时自动打印维护图片，让喷头始终保持通畅。
 
-## Features
+## 功能特性
 
-- **Scheduled Printing** — Automatically prints at user-defined intervals (e.g., every 3 days)
-- **Multi-format Support** — Print BMP, PNG, and JPEG images
-- **Modern UI** — Clean, responsive interface built with Svelte + Tailwind CSS
-- **Multi-language** — English, 简体中文, 繁體中文, 日本語
-- **System Tray** — Runs quietly in the background with tray icon and right-click menu
-- **First-run Wizard** — Guided setup on first launch for a smooth onboarding experience
-- **Dark Mode** — Full dark theme support
-- **Portable** — Single `.exe`, no installation required. Configuration stored in `%APPDATA%`
+- **定时打印** — 按自定义间隔自动打印（如每 3 天一次）
+- **多格式支持** — 支持 BMP、PNG、JPEG 图片
+- **现代化界面** — 基于 Svelte + Tailwind CSS 构建的简洁 UI
+- **多语言** — 简体中文、繁體中文、English、日本語
+- **系统托盘** — 后台静默运行，右键菜单支持多语言
+- **首次引导** — 首次启动自动弹出设置向导，快速上手
+- **深色模式** — 完整的暗色主题支持
+- **绿色便携** — 单文件 `.exe`，无需安装，配置存储在 `%APPDATA%`
 
-## Download
+## 下载
 
-Go to [Releases](../../releases) and download the latest `PrintCare.exe`.
+前往 [Releases](../../releases) 下载最新版 `PrintCare.exe`。
 
-**Requirements:** Windows 10/11 with WebView2 runtime (included in most Windows 10/11 installations).
+**系统要求：** Windows 10/11（需要 WebView2 运行时，大多数 Win10/11 已自带）。
 
-## Usage
+## 使用方法
 
-1. Run `PrintCare.exe`
-2. On first launch, a setup wizard will guide you through:
-   - Selecting your language
-   - Choosing a printer
-   - Selecting a maintenance image (a nozzle-check pattern works best)
-   - Setting the print interval
-3. The app minimizes to the system tray and prints on schedule
-4. Right-click the tray icon to show the window or exit
+1. 运行 `PrintCare.exe`
+2. 首次启动会弹出设置向导：
+   - 选择语言
+   - 选择打印机
+   - 选择维护打印图片（推荐使用喷嘴检测图案）
+   - 设置打印间隔天数
+3. 设置完成后程序最小化到系统托盘，按计划自动打印
+4. 右键托盘图标可以显示主窗口或退出程序
 
-### Configuration
+### 配置文件位置
 
-Settings are stored in:
 ```
 %APPDATA%\PrintheadMaintainer\config.json
 ```
 
-Logs are stored in:
+### 日志文件位置
+
 ```
 %APPDATA%\PrintheadMaintainer\app.log
 ```
 
-## Screenshots
+## 技术栈
 
-> _Screenshots coming soon._
+| 组件 | 技术 |
+|------|------|
+| 后端 | Go + [Wails v2](https://wails.io/) |
+| 前端 | Svelte + TypeScript + Tailwind CSS |
+| 打印 | Windows GDI API（`syscall` 直接调用） |
+| 系统托盘 | [energye/systray](https://github.com/energye/systray) |
+| 配置 | JSON 文件 |
+| 多语言 | 内嵌 JSON 语言资源文件 |
 
-## Tech Stack
+## 构建
 
-| Component | Technology |
-|-----------|-----------|
-| Backend | Go + [Wails v2](https://wails.io/) |
-| Frontend | Svelte + TypeScript + Tailwind CSS |
-| Printing | Windows GDI API via `syscall` |
-| System Tray | [energye/systray](https://github.com/energye/systray) |
-| Config | JSON file |
-| i18n | Embedded JSON locale files |
-
-## Build
-
-### Prerequisites
+### 前置条件
 
 - Go 1.21+
 - Node.js 16+
 - [Wails CLI v2](https://wails.io/docs/gettingstarted/installation)
 
-### Steps
+### 步骤
 
 ```bash
-# Install Wails CLI
 go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-# Build
-cd printhead-go
 wails build
 ```
 
-The output binary will be at `build/bin/PrintCare.exe`.
+编译产物位于 `build/bin/PrintCare.exe`。
 
-## Project Structure
+## 项目结构
 
 ```
-├── main.go              # Wails entry point
-├── app.go               # Core app struct + Wails bindings
-├── config.go            # JSON config read/write
-├── scheduler.go         # Scheduled print timer
-├── printer_windows.go   # Windows GDI print API
-├── tray.go              # System tray integration
-├── i18n.go              # Multi-language manager
-├── logger.go            # File-based logging
-├── locales/             # Language JSON files
+├── main.go              # Wails 入口
+├── app.go               # 核心 App 结构体 + Wails 绑定
+├── config.go            # JSON 配置读写
+├── scheduler.go         # 定时打印调度器
+├── printer_windows.go   # Windows GDI 打印封装
+├── tray.go              # 系统托盘
+├── i18n.go              # 多语言管理
+├── logger.go            # 文件日志
+├── locales/             # 语言资源
 │   ├── en.json
 │   ├── zh-CN.json
 │   ├── zh-TW.json
 │   └── ja.json
-└── frontend/            # Svelte + Tailwind UI
+└── frontend/            # Svelte + Tailwind 前端
     └── src/
-        ├── pages/       # Dashboard, Settings, PrintNow, Logs
-        └── components/  # Sidebar, SetupWizard, StatusCard
+        ├── pages/       # 仪表盘、设置、立即打印、日志
+        └── components/  # 侧边栏、设置向导、状态卡片
 ```
+
+---
+
+## English
+
+**PrintCare** keeps your inkjet printhead healthy by automatically printing a maintenance image at configurable intervals.
+
+**Features:** Scheduled printing, BMP/PNG/JPEG support, modern UI (Svelte + Tailwind), multi-language (en/zh-CN/zh-TW/ja), system tray, first-run wizard, dark mode, single portable EXE.
+
+**Usage:** Run `PrintCare.exe` → complete the setup wizard → the app runs in the system tray and prints on schedule.
 
 ## License
 
